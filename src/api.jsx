@@ -1,21 +1,33 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Card from "./card";
 
 
-var response;
 
 const Api = () => {
 
+    const [Data, setData] = useState([]);
+
     const getData = async () => {
-        response = await axios.get('https://picsum.photos/seed/picsum/200/300');
-        console.log(response.data);
+
+        const response = await axios.get('https://picsum.photos/v2/list');
+        setData(response.data)
+        console.log(Data);
+        
     }
 
-    return (
+    useEffect (() => {
+        getData();
+    })
 
+    return (
+        
         <div>
-            <button onClick={getData} className="border m-10 rounded-3xl p-1 flex justify-self-center bg-gradient-to-r from-red-500 to-yellow-400 active:scale-90">Get Data</button>
-            <img src={response}></img>
+            {
+                Data.map(function(elem, idx) {
+                    return <Card key = {idx} img = {elem.download_url} name = {elem.author}></Card>
+                })
+            }
         </div>
 
     );

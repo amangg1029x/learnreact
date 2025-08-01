@@ -5,10 +5,16 @@ import Card from "./card.jsx";
 import Form from "./form.jsx";
 import Value from "./ValuePasser.jsx";
 import Api from "./api.jsx";
+import { Routes , Route, Link } from "react-router-dom";
+import UserContext, { DataContext } from "./userConext.jsx";
+import { useContext } from "react";
 
 
 function App() {
     
+  const data = useContext(DataContext);
+  console.log(data);
+
   const People = [
     {
       "image": "https://randomuser.me/api/portraits/women/1.jpg",
@@ -39,16 +45,36 @@ function App() {
 
     return (
       <>
-      <Header></Header>
+      <Header></Header> 
+      <Routes>
+        <Route path="/" element = {<>
+          
       {
       People.map(function(elem, idx){
         return <Card key = {idx} img = {elem.image} name  = {elem.name} role = {elem.role}></Card>
       })
       }
       <Food></Food>
-      <Api></Api>
+      <p>Mai hoon {data}</p>
       <Form></Form>
-      <Footer></Footer>
+      <UserContext>
+        <Footer></Footer>
+      </UserContext>
+      <a href="/api"><button>Get Api</button></a>
+       </>} />
+        
+
+        <Route path = "/api" element = {
+          //Link is same as <a> tag but it prevents reloading the site
+          <>
+            <Api></Api>
+            
+            <Link to = "/" className="m-100">Card</Link>
+          </>
+        }></Route>
+      </Routes>
+
+      
       </>
     );
 }
